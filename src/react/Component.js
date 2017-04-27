@@ -35,15 +35,10 @@ const Component = ({ reducer = Reducer(s => s), view }) => ({
   },
 
   start(_initialState) {
-    return createElement(
-      withReducer(reducer.fold, _initialState)(view)
-    )
+    return createElement(withReducer(reducer.fold, _initialState)(view))
   }
 })
 
-Component.fromView = view => Component({ view })
-
-Component.of = ({ view, reducer, initialState }) =>
-  Component({ initialState, reducer, view })
+Component.of = view => Component({ reducer: Reducer(s => s), view })
 
 export default Component

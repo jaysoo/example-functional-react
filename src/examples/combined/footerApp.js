@@ -4,11 +4,11 @@ import View from '../../react/View'
 import Reader from '../../monads/Reader'
 import Monad from '../../monads/Monad'
 
-const FooterCmp = Monad.do(function*() {
+const FooterApp = Monad.do(function*() {
   const { author, year } = yield Reader.ask()
-  return Reader.of(Component.fromView(View(() => (
+  return Reader.of(Component.of(View(() => (
     <p>© {author} {year} </p>
   ))))
 })
 
-export default FooterCmp
+export default FooterApp

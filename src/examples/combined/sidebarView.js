@@ -1,11 +1,11 @@
 import React from 'react'
 import View from '../../react/View'
 
-const Sidebar = View(() => (
+const SidebarView = View(({ children }) => (
   <aside
     style={{
       padding: '5px',
-      width: '200px',
+      width: '300px',
       position: 'absolute',
       top: 0,
       left: 0,
@@ -17,7 +17,8 @@ const Sidebar = View(() => (
     <p>
       This is the sidebar...
     </p>
+    {children}
   </aside>
 ))
 
-export default Sidebar
+export default SidebarView

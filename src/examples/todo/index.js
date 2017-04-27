@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom'
-import counterApp from './counterApp'
+import todoApp from './todoApp'
 
-export { counterApp }
+export { todoApp }
 export default (element) => {
   ReactDOM.render(
-    counterApp.runReader().start(),
+    todoApp.runReader().start(),
     element
   )
 }
