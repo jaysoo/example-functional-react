@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "enzyme": "^2.8.2",
+    "react-addons-test-utils": "^15.5.1",
+    "react-scripts": "0.9.5",
+    "react-test-renderer": "^15.5.4"
   },
   "dependencies": {
     "prettier": "^1.2.2",

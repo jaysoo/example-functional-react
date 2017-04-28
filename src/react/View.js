@@ -7,6 +7,11 @@ const View = type => ({
     return View(x => f(createElement(type, x)))
   },
 
+
+  ap(other) {
+    return View(props => type(props)(createElement(other.type, props)))
+  },
+
   contramap(g) {
     return View(x => createElement(type, g(x)))
   },
