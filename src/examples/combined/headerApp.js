@@ -4,7 +4,7 @@ import Reader from '../../monads/Reader'
 import View from '../../react/View'
 
 const HeaderApp = Reader.of(Component.of(View(({ state }) => (
-  <h1>Welcome, {state.user.name}!</h1>
+  <h1>Welcome, {state.user.name}! You have {state.todo.items.length} items left to do.</h1>
 ))))
 
 export default HeaderApp
