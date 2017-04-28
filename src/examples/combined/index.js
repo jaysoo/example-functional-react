@@ -24,6 +24,7 @@ export const mainApp = Monad.do(function*() {
         chain(todoElement =>
           sidebarView.contramap(props => ({
             ...props,
+            // Renders the todo app element as a child of the sidebar.
             children: todoElement
           }))
         )
