@@ -2,7 +2,7 @@ import Reader from './Reader'
 import Monad from './Monad'
 import { liftN } from 'ramda'
 
-test('Reader', () => {
+test('Examples', () => {
   expect(Reader.ask().runReader('Hi')).toEqual('Hi')
 
   expect(Reader.ask().chain(x => Reader.of(`${x}!`)).runReader('Hi')).toEqual(
@@ -43,7 +43,7 @@ test('Contravariant', () => {
   expect(contra1().runReader('A')).toEqual(contra2().runReader('A'))
 })
 
-test('Reader.ap', () => {
+test('Applicative', () => {
   const a = Reader.ask()
   const b = Reader.of(x => x + 1)
 

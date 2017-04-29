@@ -1,10 +1,10 @@
 import React from 'react'
+import Application from '../../react/Application'
 import Component from '../../react/Component'
-import View from '../../react/View'
 import Reader from '../../monads/Reader'
 import Reducer from '../../monads/Reducer'
 
-export const todoView = View(({ state, dispatch }) => {
+export const todoCmp = Component(({ state, dispatch }) => {
   return (
     <div>
       <form
@@ -14,7 +14,6 @@ export const todoView = View(({ state, dispatch }) => {
         }}
       >
         <input
-          autoFocus
           type="text"
           placeholder="Write something..."
           value={state.todo.newText}
@@ -71,10 +70,11 @@ export const todoReducer = Reducer((state, action) => {
 })
 
 const todoApp = Reader.of(
-  Component({
-    view: todoView,
+  Application({
+    view: todoCmp,
     reducer: todoReducer.contramap(state => ({
       todo: {
+        newText: '',
         nextId: 1,
         items: []
       },

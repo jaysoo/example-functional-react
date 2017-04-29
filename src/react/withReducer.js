@@ -1,11 +1,11 @@
-import { Component } from 'react'
+import { PureComponent } from 'react'
 
 // Adapted from https://github.com/acdlite/recompose
 const withReducer = (
   reducer,
   initialState
-) => view => {
-  return class extends Component {
+) => component => {
+  return class extends PureComponent {
     state = {
       stateValue: this.initializeStateValue()
     }
@@ -28,7 +28,7 @@ const withReducer = (
       }))
 
     render() {
-      return view.fold({
+      return component.fold({
         ...this.props,
         state: this.state.stateValue,
         dispatch: this.dispatch

@@ -1507,6 +1507,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+debug.trace@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/debug.trace/-/debug.trace-1.0.1.tgz#050c991cb8bfa2d6ff090ff4bfd1781d3729c20c"
+
 debug@2.2.0, debug@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"

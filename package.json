@@ -9,6 +9,7 @@
     "react-test-renderer": "^15.5.4"
   },
   "dependencies": {
+    "debug.trace": "^1.0.1",
     "prettier": "^1.2.2",
     "ramda": "^0.23.0",
     "react": "^15.4.2",

@@ -11,7 +11,7 @@ function foldp(acc, x) {
   }
 }
 
-test('Base', () => {
+test('Basic example', () => {
   const a = Reducer(foldp)
   expect(a.fold(0, 'INC')).toEqual(1)
 })

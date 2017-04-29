@@ -1,43 +1,27 @@
-class _Reader {
-  constructor(fn) {
-    this.fn = fn
-  }
+const Reader = fn => ({
+  fn,
+  
+  map: f => Reader(ctx => f(fn(ctx))),
 
-  map(f) {
-    return new _Reader(ctx => f(this.fn(ctx)))
-  }
+  contramap: f => Reader(ctx => fn(f(ctx))),
 
-  contramap(f) {
-    return new _Reader(ctx => this.fn(f(ctx)))
-  }
+  chain: g => Reader(ctx => g(fn(ctx)).fn(ctx)),
 
-  chain(g) {
-    return new _Reader(ctx => g(this.fn(ctx)).fn(ctx))
-  }
+  ap: other => Reader(ctx => fn(ctx)(other.fn(ctx))),
 
-  ap(other) {
-    return new _Reader(ctx => this.fn(ctx)(other.fn(ctx)))
-  }
-
-  runReader(ctx) {
-    return this.fn(ctx)
-  }
-}
-
-function Reader(fn) {
-  return new _Reader(fn)
-}
+  runReader: ctx => fn(ctx)
+})
 
 Reader.of = x => {
-  return new _Reader(() => x)
+  return Reader(() => x)
 }
 
 Reader.ask = () => {
-  return new _Reader(x => x)
+  return Reader(x => x)
 }
 
 Reader.asks = fn => {
-  return new _Reader(fn)
+  return Reader(fn)
 }
 
 export default Reader

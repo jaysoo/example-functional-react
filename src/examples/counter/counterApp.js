@@ -1,10 +1,10 @@
 import React from 'react'
+import Application from '../../react/Application'
 import Component from '../../react/Component'
-import View from '../../react/View'
 import Reader from '../../monads/Reader'
 import Reducer from '../../monads/Reducer'
 
-const counterView = View(({ state, dispatch }) => {
+const counterCmp = Component(({ state, dispatch }) => {
   return (
     <div>
       <button onClick={() => dispatch({ type: 'DEC' })}>
@@ -40,8 +40,8 @@ export const counterReducer = Reducer((state, action) => {
 })
 
 const counterApp = Reader.of(
-  Component({
-    view: counterView,
+  Application({
+    view: counterCmp,
     reducer: counterReducer.contramap(state => ({
       counter: 10,
       ...state

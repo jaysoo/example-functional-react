@@ -1,10 +1,10 @@
 import React from 'react'
-import Component from '../../react/Component'
+import Application from '../../react/Application'
 import Reader from '../../monads/Reader'
-import View from '../../react/View'
+import Component from '../../react/Component'
 
-const HeaderApp = Reader.of(Component.of(View(({ state }) => (
+const headerApp = Reader.of(Application.of(Component(({ state }) => (
   <h1>Welcome, {state.user.name}! You have {state.todo.items.length} items left to do.</h1>
 ))))
 
-export default HeaderApp
+export default headerApp

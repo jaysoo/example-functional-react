@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
-import View from '../../react/View'
+import Component from '../../react/Component'
 import Reader from '../../monads/Reader'
 import Monad from '../../monads/Monad'
 import { liftN } from 'ramda'
@@ -11,16 +11,16 @@ const Footer = ({ author, year }) => <p>© {author} {year}</p>
 
 const headerApp = Monad.do(function*() {
   const greeting = yield Reader.asks(ctx => ctx.greeting)
-  return Reader.of(View(Heading).contramap(({ name }) => ({ name, greeting })))
+  return Reader.of(Component(Heading).contramap(({ name }) => ({ name, greeting })))
 })
 
 const footerApp = Monad.do(function*() {
   const { author, year } = yield Reader.ask()
-  return Reader.of(View(Footer).contramap(() => ({ author, year })))
+  return Reader.of(Component(Footer).contramap(() => ({ author, year })))
 })
 
 const messageApp = Reader.of(
-  View(Message).contramap(({ message }) => ({
+  Component(Message).contramap(({ message }) => ({
     message: <span>👏 {message} 👏</span>
   }))
 )
@@ -30,7 +30,7 @@ const mconcat3 = liftN(3, (x, y, z) =>
     const a = yield x
     const b = yield y
     const c = yield z
-    return View.of(
+    return Component.of(
       <div>
         {a} {b} {c}
       </div>
