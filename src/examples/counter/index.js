@@ -4,7 +4,7 @@ import counterApp from './counterApp'
 export { counterApp }
 export default (element) => {
   ReactDOM.render(
-    counterApp.runReader().start(),
+    counterApp.runReader().startWith(),
     element
   )
 }

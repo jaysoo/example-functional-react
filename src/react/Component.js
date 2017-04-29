@@ -30,7 +30,7 @@ const Application = ({ reducer = Reducer(s => s), view }) => ({
       view: view.concat(other.view)
     }),
 
-  start: _initialState =>
+  startWith: _initialState =>
     createElement(withReducer(reducer.fold, _initialState)(view))
 })
 

@@ -40,7 +40,7 @@ export const mainApp = Monad.do(function*() {
 
 export default element => {
   ReactDOM.render(
-    mainApp.runReader({ year: 2017, author: 'Bob McBob' }).start({
+    mainApp.runReader({ year: 2017, author: 'Bob McBob' }).startWith({
       user: { name: 'Alice' }
     }),
     element
