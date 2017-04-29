@@ -38,20 +38,16 @@ const mconcat3 = liftN(3, (x, y, z) =>
   })
 )
 
-const wrap = Type => m => m.map(a => <Type>{a}</Type>)
-
-const mainApp = mconcat3(
-  headerApp.map(wrap('header')),
-  messageApp.map(wrap('main')),
-  footerApp.map(wrap('footer'))
-)
+const mainApp = mconcat3(headerApp, messageApp, footerApp)
 
 export default element => {
   ReactDOM.render(
-    mainApp.runReader({ greeting: 'Hello', author: 'Bob McBob', year: 2017 }).fold({
-      name: 'Alice',
-      message: 'Now this is composable react'
-    }),
+    mainApp
+      .runReader({ greeting: 'Hello', author: 'Bob McBob', year: 2017 })
+      .fold({
+        name: 'Alice',
+        message: 'Now this is composable react'
+      }),
     element
   )
 }
