@@ -4,7 +4,7 @@ import { PureComponent } from 'react'
 const withReducer = (
   reducer,
   initialState
-) => component => {
+) => view => {
   return class extends PureComponent {
     state = {
       stateValue: this.initializeStateValue()
@@ -28,7 +28,7 @@ const withReducer = (
       }))
 
     render() {
-      return component.fold({
+      return view.fold({
         ...this.props,
         state: this.state.stateValue,
         dispatch: this.dispatch

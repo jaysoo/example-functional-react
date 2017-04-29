@@ -1,27 +1,27 @@
 import { createElement } from 'react'
 
-const Component = type => ({
+const View = type => ({
   type,
 
-  map: f => Component(x => f(createElement(type, x))),
+  map: f => View(x => f(createElement(type, x))),
 
-  ap: other => Component(props => type(props)(createElement(other.type, props))),
+  ap: other => View(props => type(props)(createElement(other.type, props))),
 
-  contramap: g => Component(x => createElement(type, g(x))),
+  contramap: g => View(x => createElement(type, g(x))),
 
   concat: other =>
-    Component(props =>
+    View(props =>
       createElement('div', {
         children: [createElement(type, props), other.fold(props)]
       })
     ),
 
   chain: f =>
-    Component(props => createElement(f(createElement(type, props)).type, props)),
+    View(props => createElement(f(createElement(type, props)).type, props)),
 
   fold: props => createElement(type, props)
 })
 
-Component.of = x => Component(() => x)
+View.of = x => View(() => x)
 
-export default Component
+export default View

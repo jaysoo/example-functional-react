@@ -1,12 +1,11 @@
 import React from 'react'
 import { without } from 'ramda'
-import Application from '../../react/Application'
 import Component from '../../react/Component'
+import View from '../../react/View'
 import Reader from '../../monads/Reader'
 import Reducer from '../../monads/Reducer'
 
-export const todoCmp = Component(({ state, dispatch }) => {
-  console.log('???', state)
+export const todoCmp = View(({ state, dispatch }) => {
   return (
     <div>
       <form
@@ -32,7 +31,7 @@ export const todoCmp = Component(({ state, dispatch }) => {
           <li key={todo.id}>
             {todo.text}
             {' '}
-            <a style={{ cursor: 'pointer' }} onClick={() => dispatch({ type: 'todo/REMOVE', id: todo.id })}>
+            <a style={{ color: '#999', cursor: 'pointer' }} onClick={() => dispatch({ type: 'todo/REMOVE', id: todo.id })}>
               ×
             </a>
           </li>
@@ -89,7 +88,7 @@ export const todoReducer = Reducer((state, action) => {
 })
 
 const todoApp = Reader.of(
-  Application({
+  Component({
     view: todoCmp,
     reducer: todoReducer.contramap(state => ({
       todo: {
