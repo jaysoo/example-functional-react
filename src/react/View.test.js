@@ -7,10 +7,10 @@ const toHTML = compose(x => x.html(), shallow)
 
 test('Applicative', () => {
   const a = View.of(<span>Hello</span>)
-  const b = View.of(a => <p>{a}!</p>)
+  const b = View.of(x => <p>{x}!</p>)
 
-  expect(toHTML(a.ap(b).fold({}))).toEqual('<p><span>Hello</span>!</p>')
+  expect(toHTML(b.ap(a).fold({}))).toEqual('<p><span>Hello</span>!</p>')
 
-  const idLaw = a.ap(View.of(x => x))
+  const idLaw = View.of(x => x).ap(a)
   expect(toHTML(idLaw.fold())).toEqual(toHTML(a.fold()))
 })
