@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { map } from 'ramda'
+import { compose, map } from 'ramda'
 import Monad from '../../monads/Monad'
 import Reader from '../../monads/Reader'
 import headerApp from './headerApp'
 import footerApp from './footerApp'
-import inSidebar from './inSidebar'
+import makeSidebar from './makeSidebar'
 import { counterApp } from '../counter'
 import { todoApp } from '../todo'
 
@@ -24,7 +24,17 @@ export const mainApp = Monad.do(function*() {
       .concat(footer)
       .map(map(makeMain))
       .concat(
-        todo.map(map(inSidebar))
+        todo.map(map(
+          compose(
+            makeSidebar,
+            x => (
+              <div>
+                <h2>Your items</h2>
+                {x}
+              </div>
+            )
+          )
+        ))
       )
   )
 })

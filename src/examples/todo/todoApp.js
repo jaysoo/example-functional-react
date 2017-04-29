@@ -1,10 +1,12 @@
 import React from 'react'
+import { without } from 'ramda'
 import Application from '../../react/Application'
 import Component from '../../react/Component'
 import Reader from '../../monads/Reader'
 import Reducer from '../../monads/Reducer'
 
 export const todoCmp = Component(({ state, dispatch }) => {
+  console.log('???', state)
   return (
     <div>
       <form
@@ -29,6 +31,10 @@ export const todoCmp = Component(({ state, dispatch }) => {
         {state.todo.items.map(todo => (
           <li key={todo.id}>
             {todo.text}
+            {' '}
+            <a style={{ cursor: 'pointer' }} onClick={() => dispatch({ type: 'todo/REMOVE', id: todo.id })}>
+              ×
+            </a>
           </li>
         ))}
       </ul>
@@ -59,6 +65,19 @@ export const todoReducer = Reducer((state, action) => {
                 text: state.todo.newText
               }
             ])
+          }
+        }
+      } else {
+        return state
+      }
+    case 'todo/REMOVE':
+      const todo = state.todo.items.find(x => x.id === action.id)
+      if (todo) {
+        return {
+          ...state,
+          todo: {
+            ...state.todo,
+            items: without([todo], state.todo.items)
           }
         }
       } else {

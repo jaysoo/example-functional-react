@@ -1,27 +1,39 @@
 import { createElement } from 'react'
+import withReducer from './withReducer'
+import Reducer from '../monads/Reducer'
 
-const Component = type => ({
-  type,
+const Application = ({ reducer = Reducer(s => s), view }) => ({
+  reducer,
+  view,
 
-  map: f => Component(x => f(createElement(type, x))),
+  contramap: f =>
+    Application({
+      reducer,
+      view: view.contramap(f)
+    }),
 
-  ap: other => Component(props => other.type(props)(createElement(type, props))),
-
-  contramap: g => Component(x => createElement(type, g(x))),
-
-  concat: other =>
-    Component(props =>
-      createElement('div', {
-        children: [createElement(type, props), other.fold(props)]
-      })
-    ),
+  map: f =>
+    Application({
+      reducer,
+      view: f(view)
+    }),
 
   chain: f =>
-    Component(props => createElement(f(createElement(type, props)).type, props)),
+    Application({
+      reducer,
+      view: f(view).view
+    }),
 
-  fold: props => createElement(type, props)
+  concat: other =>
+    Application({
+      reducer: reducer.concat(other.reducer),
+      view: view.concat(other.view)
+    }),
+
+  start: _initialState =>
+    createElement(withReducer(reducer.fold, _initialState)(view))
 })
 
-Component.of = x => Component(() => x)
+Application.of = view => Application({ reducer: Reducer(s => s), view })
 
-export default Component
+export default Application

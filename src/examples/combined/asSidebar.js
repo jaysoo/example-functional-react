@@ -1,6 +1,7 @@
 import React from 'react'
+import Component from '../../react/Component'
 
-const inSidebar = x => (
+const inSidebar = Component.of(x => (
   <aside
     style={{
       padding: '5px',
@@ -12,9 +13,8 @@ const inSidebar = x => (
       borderRight: '1px solid gray'
     }}
   >
-    <h2>Sidebar</h2>
     {x}
   </aside>
-)
+))
 
 export default inSidebar
