@@ -7,7 +7,7 @@ import Reducer from '../../monads/Reducer'
 const counterCmp = View(({ state, dispatch }) => {
   return (
     <div>
-      <button onClick={() => dispatch({ type: 'DEC' })}>
+      <button onClick={() => dispatch({ type: 'counter/DEC' })}>
         -
       </button>
       {' '}
@@ -15,7 +15,7 @@ const counterCmp = View(({ state, dispatch }) => {
         Counter: {state.counter}
       </span>
       {' '}
-      <button onClick={() => dispatch({ type: 'INC' })}>
+      <button onClick={() => dispatch({ type: 'counter/INC' })}>
         +
       </button>
     </div>
@@ -24,12 +24,12 @@ const counterCmp = View(({ state, dispatch }) => {
 
 export const counterReducer = Reducer((state, action) => {
   switch (action.type) {
-    case 'INC':
+    case 'counter/INC':
       return {
         ...state,
         counter: state.counter + 1
       }
-    case 'DEC':
+    case 'counter/DEC':
       return {
         ...state,
         counter: state.counter - 1
