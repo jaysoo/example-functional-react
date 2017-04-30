@@ -11,7 +11,7 @@ const View = type => ({
 
   concat: other =>
     View(props =>
-      createElement('div', {}, [createElement(type, props), other.fold(props)])
+      createElement('div', { children: [createElement(type, props), other.fold(props)] })
     ),
 
   chain: f =>
