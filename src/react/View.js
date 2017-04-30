@@ -22,4 +22,6 @@ const View = type => ({
 
 View.of = x => View(() => x)
 
+View.empty = () => View.of(null)
+
 export default View

@@ -45,17 +45,21 @@ const mconcat3 = liftN(3, (x, y, z) =>
 
 const mainApp = mconcat3(headerApp, messageApp, footerApp)
 
-const header = View.of(<header><h1>Awesome App</h1></header>)
+const header = View.of(<h1>Awesome App</h1>)
 const greeting = View(({ name }) => <p>Hello {name}!</p>)
-const footer = View.of(<footer>© Bob McBob 2017</footer>)
+const footer = View.of(<p>© Bob McBob 2017</p>)
 
-const main = header
-  .concat(greeting)
-  .concat(footer)
+const main = header.map(x => <header style={{ color: 'red'}}>{x}</header>)
+  .concat(greeting.contramap(() => ({ name: 'Alice' })))
+  .concat(footer.map(x => <footer style={{ color: 'blue' }}>{x}</footer>))
+
+const centered = main.map(x => <div style={{ textAlign: 'center' }}>{x}</div>)
+
+const centered2 = View.empty().concat(centered).concat(View.empty())
 
 export default element => {
   ReactDOM.render(
-    main.fold({ name: 'Alice' }),
+    centered2.fold(),
     // mainApp
     //   .runReader({ greeting: 'Hello', author: 'Bob McBob', year: 2017 })
     //   .fold({
