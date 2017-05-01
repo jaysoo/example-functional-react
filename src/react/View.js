@@ -1,27 +1,38 @@
-import { createElement } from 'react'
+import { ap, compose } from 'ramda'
+import React, { createElement } from 'react'
 
-const View = type => ({
-  type,
+const View = computation => {
+  computation = compose(asArray, computation)
 
-  map: f => View(x => f(createElement(type, x))),
+  return {
+    computation,
 
-  ap: other => View(props => type(props)(createElement(other.type, props))),
+    map: f => View(x => computation(x).map(f)),
 
-  contramap: g => View(x => createElement(type, g(x))),
+    ap: other => View(props => ap(computation(props), other.computation(props))),
 
-  concat: other =>
-    View(props =>
-      createElement('div', { children: [createElement(type, props), other.fold(props)] })
-    ),
+    contramap: g => View(x => computation(g(x))),
 
-  chain: f =>
-    View(props => createElement(f(createElement(type, props)).type, props)),
+    concat: other =>
+      View(props => computation(props).concat(other.computation(props))),
 
-  fold: props => createElement(type, props)
-})
+    chain: f =>
+      View(props => createElement(f(createElement(computation, props)).type, props)),
+
+    fold: props => createElement('div', { children: computation(props) })
+  }
+}
 
 View.of = x => View(() => x)
 
 View.empty = () => View.of(null)
 
 export default View
+
+function asArray(x) {
+  if (Array.isArray(x)) {
+    return x
+  } else {
+    return Array.of(x)
+  }
+}

@@ -9,7 +9,7 @@ test('Applicative', () => {
   const a = View.of(<span>Hello</span>)
   const b = View.of(x => <p>{x}!</p>)
 
-  expect(toHTML(b.ap(a).fold({}))).toEqual('<p><span>Hello</span>!</p>')
+  expect(toHTML(b.ap(a).fold({}))).toEqual('<div><p><span>Hello</span>!</p></div>')
 
   // Identity
   expect(toHTML(View.of(x => x).ap(a).fold())).toEqual(toHTML(a.fold()))
@@ -50,5 +50,25 @@ test('Contravariant', () => {
 
   expect(toHTML(compLaw1.fold({ name: 'Fred' }))).toEqual(
     toHTML(compLaw2.fold({ name: 'Fred' }))
+  )
+})
+
+test('Semigroup', () => {
+  const a = View.of(<div>a</div>)
+  const b = View.of(<div>b</div>)
+  const c = View.of(<div>c</div>)
+
+  expect(toHTML(a.concat(b).concat(c).fold())).toEqual(
+    toHTML(a.concat((b.concat(c))).fold())
+  )
+})
+
+
+test('Monoid', () => {
+  const a = View.of(<div>a</div>)
+  const empty = View.empty()
+
+  expect(toHTML(a.concat(empty).fold())).toEqual(
+    toHTML(empty.concat(a).fold())
   )
 })
