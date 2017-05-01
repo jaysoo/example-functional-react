@@ -58,8 +58,8 @@ test('Semigroup', () => {
   const b = View.of(<div>b</div>)
   const c = View.of(<div>c</div>)
 
-  expect(toHTML(a.concat(b).concat(c).fold())).toEqual(
-    toHTML(a.concat((b.concat(c))).fold())
+  expect(toHTML((a.concat(b)).concat(c).fold())).toEqual(
+    toHTML(a.concat(b.concat(c)).fold())
   )
 })
 
