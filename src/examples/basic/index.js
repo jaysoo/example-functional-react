@@ -59,7 +59,7 @@ const centered2 = View.empty().concat(centered).concat(View.empty())
 
 export default element => {
   ReactDOM.render(
-    View.of(View.of(<div>Test</div>).fold()).fold(),
+    centered2.fold(),
     // mainApp
     //   .runReader({ greeting: 'Hello', author: 'Bob McBob', year: 2017 })
     //   .fold({
