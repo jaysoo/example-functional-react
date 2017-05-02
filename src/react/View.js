@@ -7,7 +7,7 @@ const View = pipe(
   x => compose(asArray, x),
   computation => ({
     computation, // This is used during chain, concat, etc.
-                 // Not meant to be used publicly.
+    // Not meant to be used publicly.
 
     fold: props => {
       const result = computation(props).filter(x => x !== null)
@@ -35,7 +35,9 @@ const View = pipe(
     concat: other =>
       View(props => computation(props).concat(other.computation(props))),
 
-    chain: g => View(x => computation(x).concat(y => g(y).computation(x)))
+    chain: g => View(x => computation(x).concat(y => g(y).computation(x))),
+
+    promap: (g, f) => View(x => computation(g(x)).map(f))
   })
 )
 

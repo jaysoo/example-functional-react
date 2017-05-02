@@ -43,6 +43,24 @@ test('Contravariant', () => {
   )
 })
 
+test('Profunctor', () => {
+  const p = View(({ name }) => <span>Hi {name}</span>)
+  const f = ({ name }) => ({ name: `${name}?` })
+  const g = ({ name }) => ({ name: `${name}!` })
+  const i = x => <div>{x}</div>
+  const h = x => <section>{x}</section>
+
+  expect(
+    toHTML(
+      p.promap(a => f(g(a)), b => h(i(b))).fold({name: 'Alice'})
+    )
+  ).toEqual(
+    toHTML(
+      p.promap(f, i).promap(g, h).fold({name: 'Alice'})
+    )
+  )
+})
+
 test('Semigroup', () => {
   const a = View.of(<div>a</div>)
   const b = View.of(<div>b</div>)
