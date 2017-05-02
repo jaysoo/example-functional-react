@@ -66,7 +66,7 @@ test('Applicative', () => {
   const a = View.of(<span>Hello</span>)
   const b = View.of(x => <p>{x}!</p>)
 
-  expect(toHTML(b.ap(a).fold({}))).toEqual('<div><p><span>Hello</span>!</p></div>')
+  expect(toHTML(b.ap(a).fold({}))).toEqual('<p><span>Hello</span>!</p>')
 
   // Identity
   expect(toHTML(View.of(x => x).ap(a).fold())).toEqual(toHTML(a.fold()))
