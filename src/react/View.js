@@ -7,19 +7,19 @@ const View = computation => {
   return {
     computation,
 
+    fold: props => createElement('div', { children: computation(props) }),
+
     map: f => View(x => computation(x).map(f)),
 
-    ap: other => View(props => ap(computation(props), other.computation(props))),
+    ap: other =>
+      View(props => ap(computation(props), other.computation(props))),
 
     contramap: g => View(x => computation(g(x))),
 
     concat: other =>
       View(props => computation(props).concat(other.computation(props))),
 
-    chain: f =>
-      View(props => createElement(f(createElement(computation, props)).type, props)),
-
-    fold: props => createElement('div', { children: computation(props) })
+    chain: g => View(x => computation(x).concat(y => g(y).computation(x)))
   }
 }
 
