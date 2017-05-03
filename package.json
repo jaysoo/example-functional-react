@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "debug.trace": "^1.0.1",
-    "prettier": "^1.2.2",
+    "global": "^4.3.2",
+    "prettier": "latest",
     "ramda": "^0.23.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
