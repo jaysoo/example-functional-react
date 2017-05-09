@@ -1,5 +1,5 @@
 import { ap, compose, pipe } from 'ramda'
-import React, { createElement } from 'react'
+import { createElement } from 'react'
 
 const asArray = x => (Array.isArray(x) ? x : Array.of(x))
 
