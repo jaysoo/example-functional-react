@@ -72,6 +72,10 @@ test('Monad', () => {
   const m = Reader.of(1)
   // Right identity
   expect(m.chain(Reader.of).runReader()).toEqual(m.runReader())
+
+  // Associativity
+  const g = x => Reader.of(`Got ${x}`)
+  expect(m.chain(f).chain(g).runReader()).toEqual(m.chain(x => f(x).chain(g)).runReader())
 })
 
 test('Monad.do', () => {
