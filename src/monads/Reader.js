@@ -21,12 +21,8 @@ const Reader = computation => ({
 
 Reader.of = x => Reader(() => x)
 
-Reader.ask = () => {
-  return Reader(x => x)
-}
+Reader.ask = () => Reader(x => x)
 
-Reader.asks = fn => {
-  return Reader(fn)
-}
+Reader.asks = fn => Reader(fn)
 
 export default Reader
