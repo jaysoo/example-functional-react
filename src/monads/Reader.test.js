@@ -1,6 +1,5 @@
 import Reader from './Reader'
 import Monad from './Monad'
-import { liftN } from 'ramda'
 
 test('Examples', () => {
   expect(Reader.ask().runReader('Hi')).toEqual('Hi')
@@ -44,16 +43,35 @@ test('Contravariant', () => {
 })
 
 test('Applicative', () => {
-  const a = Reader.ask()
-  const b = Reader.of(x => x + 1)
-
-  const x = b.ap(a).runReader(100)
-  expect(x).toEqual(101)
-
-  const mmult3 = liftN(3, (x, y, z) => x * y * z)
-  expect(mmult3(Reader.of(2), Reader.of(3), Reader.of(4)).runReader()).toEqual(
-    24
+  // Identity
+  expect(Reader.of(x => x).ap(Reader.of(1)).runReader()).toEqual(
+    Reader.of(1).runReader()
   )
+
+  // Homomorphism
+  const f = x => x + 1
+  expect(Reader.of(f).ap(Reader.of(1)).runReader()).toEqual(
+    Reader.of(f(1)).runReader()
+  )
+
+  // Interchange
+  const y = 1
+  const u = Reader.of(x => x * 2)
+  expect(u.ap(Reader.of(y)).runReader()).toEqual(
+    Reader.of(f => f(y)).ap(u).runReader()
+  )
+})
+
+test('Monad', () => {
+  const a = 1
+  const f = x => Reader.of(x + 1)
+
+  // Left identity
+  expect(Reader.of(a).chain(f).runReader()).toEqual(f(a).runReader())
+
+  const m = Reader.of(1)
+  // Right identity
+  expect(m.chain(Reader.of).runReader()).toEqual(m.runReader())
 })
 
 test('Monad.do', () => {

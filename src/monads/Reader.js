@@ -1,20 +1,25 @@
-const Reader = fn => ({
-  fn,
-  
-  map: f => Reader(ctx => f(fn(ctx))),
+const Reader = computation => ({
+  map: f => Reader(ctx => f(computation(ctx))),
 
-  contramap: f => Reader(ctx => fn(f(ctx))),
+  contramap: f => Reader(ctx => computation(f(ctx))),
 
-  chain: g => Reader(ctx => g(fn(ctx)).fn(ctx)),
+  chain: f => {
+    return Reader(ctx => {
+      // Get the result from original computation
+      const a = computation(ctx)
 
-  ap: other => Reader(ctx => fn(ctx)(other.fn(ctx))),
+      // Now get the result from the computation
+      // inside the Reader `f(a)`.
+      return f(a).runReader(ctx)
+    })
+  },
 
-  runReader: ctx => fn(ctx)
+  ap: other => Reader(ctx => computation(ctx)(other.runReader(ctx))),
+
+  runReader: ctx => computation(ctx)
 })
 
-Reader.of = x => {
-  return Reader(() => x)
-}
+Reader.of = x => Reader(() => x)
 
 Reader.ask = () => {
   return Reader(x => x)
