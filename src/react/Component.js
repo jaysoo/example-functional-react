@@ -2,38 +2,44 @@ import { createElement } from 'react'
 import withReducer from './withReducer'
 import Reducer from '../monads/Reducer'
 
-const Application = ({ reducer = Reducer(s => s), view }) => ({
+const Component = ({ reducer = Reducer(s => s), view }) => ({
   reducer,
   view,
 
-  contramap: f =>
-    Application({
-      reducer,
-      view: view.contramap(f)
+  concat: other =>
+    Component({
+      reducer: reducer.concat(other.reducer),
+      view: view.concat(other.view)
     }),
 
   map: f =>
-    Application({
+    Component({
       reducer,
-      view: f(view)
+      view: view.map(f)
     }),
 
   chain: f =>
-    Application({
+    Component({
       reducer,
-      view: f(view).view
+      view: view.chain(f)
     }),
 
-  concat: other =>
-    Application({
-      reducer: reducer.concat(other.reducer),
-      view: view.concat(other.view)
+  contramap: f =>
+    Component({
+      reducer: reducer.contramap(f),
+      view: view
+    }),
+
+  promap: (f, g) =>
+    Component({
+      reducer: reducer.contramap(f),
+      view: view.map(g)
     }),
 
   startWith: _initialState =>
     createElement(withReducer(reducer.fold, _initialState)(view))
 })
 
-Application.of = view => Application({ reducer: Reducer(s => s), view })
+Component.of = view => Component({ reducer: Reducer(s => s), view })
 
-export default Application
+export default Component

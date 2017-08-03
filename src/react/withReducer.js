@@ -11,14 +11,12 @@ const withReducer = (
     }
 
     initializeStateValue() {
-      const initial = reducer(undefined, { type: '@@INIT' })
       if (initialState !== undefined) {
-        const provided = typeof initialState === 'function'
+        return typeof initialState === 'function'
           ? initialState(this.props)
           : initialState
-        return { ...initial, ...provided }
       } else {
-        return initial
+        return reducer(undefined, { type: '@@INIT' })
       }
     }
 
