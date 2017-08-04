@@ -1,14 +1,14 @@
 const Reducer = f => ({
-  fold: (acc, x) => f(acc, x),
+  fold: f,
 
-  map: g => Reducer((acc, x) => g(f(acc, x))),
+  map: g => Reducer((s, a) => g(f(s, a))),
 
-  contramap: g => Reducer((acc, x) => f(g(acc, x), x)),
+  contramap: g => Reducer((s, a) => f(g(s, a), a)),
 
-  promap: (g, h) => Reducer((acc, x) => h(f(g(acc, x), x))),
+  promap: (g, h) => Reducer((s, a) => h(f(g(s, a), a))),
 
-  concat: other => Reducer((acc, x) => {
-    return { ...f(acc, x), ...other.fold(acc, x) }
+  concat: other => Reducer((s, a) => {
+    return { ...f(s, a), ...other.fold(s, a) }
   })
 })
 
