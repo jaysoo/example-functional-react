@@ -36,6 +36,18 @@ const Component = ({ reducer = Reducer(s => s), view }) => ({
       view: view.map(g)
     }),
 
+  bimap: (f, g) =>
+    Component({
+      reducer: reducer.map(f),
+      view: view.map(g)
+    }),
+
+  bicontramap: (f, g) =>
+    Component({
+      reducer: reducer.contramap(f),
+      view: view.contramap(g)
+    }),
+
   startWith: _initialState =>
     createElement(withReducer(reducer.fold, _initialState)(view))
 })
