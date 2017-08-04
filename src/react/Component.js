@@ -48,6 +48,18 @@ const Component = ({ reducer = Reducer(s => s), view }) => ({
       view: view.contramap(g)
     }),
 
+  trimap: (f, g, h) =>
+    Component({
+      reducer: reducer.contramap(f).map(g),
+      view: view.contramap(h)
+    }),
+
+  quadmap: (f, g, h, i) =>
+    Component({
+      reducer: reducer.contramap(f).map(g),
+      view: view.contramap(h).map(i)
+    }),
+
   startWith: _initialState =>
     createElement(withReducer(reducer.fold, _initialState)(view))
 })

@@ -45,14 +45,6 @@ test('Contravariant', () => {
   )
 })
 
-test('Profunctor', () => {
-  const a = Reducer(foldp)
-
-  expect(
-    a.promap(s => s.a, s => ({ a: s })).fold({ a: { counter: 10 } }, 'DEC')
-  ).toEqual({ a: a.fold({ counter: 10 }, 'DEC') })
-})
-
 test('Semigroup', () => {
   const a = Reducer(x => ({ a: x.a + 1 }))
   const b = Reducer(x => ({ b: x.b * 2 }))
@@ -66,8 +58,8 @@ test('Example: combine reducers', () => {
   const b = Reducer(foldp)
 
   // Nest original states.
-  const c = a.contramap(s => s.a).map(s => ({ a: s }))
-  const d = b.contramap(s => s.b).map(s => ({ b: s }))
+  const c = a.promap(s => s.a, s => ({ a: s }))
+  const d = b.promap(s => s.b, s => ({ b: s }))
 
   const combined = c.concat(d)
 

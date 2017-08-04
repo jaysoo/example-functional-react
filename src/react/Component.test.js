@@ -17,8 +17,7 @@ const a = Component({
         </p>
       </div>
     )
-    }
-  ),
+  }),
   reducer: Reducer((state, action) => {
     switch (action.type) {
       case 'INC':
@@ -43,7 +42,7 @@ test('Contravariant', () => {
 
   // Composition
   const f = s => s + 1
-  const g = s => s  * 2
+  const g = s => s * 2
   const compLaw1 = a.contramap(compose(f, g))
   const compLaw2 = a.contramap(f).contramap(g)
   const y1 = shallow(compLaw1.startWith({ counter: 10 }))
@@ -99,7 +98,7 @@ test('Profunctor', () => {
 
   // Composition
   const f = s => s + 1
-  const g = s => s  * 2
+  const g = s => s * 2
   const h = x => <div>x: {x}</div>
   const i = y => <div>y: {y}</div>
   const compLaw1 = a.promap(compose(f, g), compose(h, i))
@@ -115,8 +114,7 @@ test('Profunctor', () => {
   expect(y1.html()).toEqual(y2.html())
 })
 
-
-test.only('Bicontraviant', () => {
+test('Bicontraviant', () => {
   // Identity
   const x1 = shallow(a.bicontramap(x => x, x => x).startWith({ counter: 10 }))
   const x2 = shallow(a.startWith({ counter: 10 }))
@@ -147,13 +145,37 @@ test.only('Bicontraviant', () => {
   const y2 = shallow(compLaw2.startWith({ counter: 10 }))
 
   expect(y1.html()).toEqual(y2.html())
-  console.log(y1.html())
-  console.log(y2.html())
 
   y1.find('button').simulate('click')
   y2.find('button').simulate('click')
 
   expect(y1.html()).toEqual(y2.html())
-  console.log(y1.html())
-  console.log(y2.html())
+})
+
+test('Trinary functor example', () => {
+  const b = a.trimap(s => s.b, b => ({ b }), ({ state, dispatch }) => ({
+    state: state.b,
+    dispatch
+  }))
+
+  const wrapper = shallow(b.startWith({ b: { counter: 10 } }))
+  expect(wrapper.html()).toMatch(/<p>10<\/p>/)
+
+  wrapper.find('button').simulate('click')
+  wrapper.find('button').simulate('click')
+  expect(wrapper.html()).toMatch(/<p>12<\/p>/)
+})
+
+test('Quaternary functor example', () => {
+  const b = a.quadmap(s => s.b, b => ({ b }), ({ state, dispatch }) => ({
+    state: state.b,
+    dispatch
+  }), x => <main>{x}</main>)
+
+  const wrapper = shallow(b.startWith({ b: { counter: 10 } }))
+  expect(wrapper.html()).toEqual('<main><div><button>increment</button><p>10</p></div></main>')
+
+  wrapper.find('button').simulate('click')
+  wrapper.find('button').simulate('click')
+  expect(wrapper.html()).toEqual('<main><div><button>increment</button><p>12</p></div></main>')
 })
