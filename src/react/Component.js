@@ -1,6 +1,7 @@
 import { createElement } from 'react'
 import withReducer from './withReducer'
 import Reducer from '../monads/Reducer'
+import View from './View'
 
 const Component = ({ reducer = Reducer(s => s), view }) => ({
   reducer,
@@ -65,5 +66,18 @@ const Component = ({ reducer = Reducer(s => s), view }) => ({
 })
 
 Component.of = view => Component({ reducer: Reducer(s => s), view })
+
+export function combine(xs) {
+  return Object.keys(xs).reduce((cmp, k) => {
+    return cmp.concat(xs[k].trimap(
+      s => s[k],
+      x => ({ [k]: x }),
+      ({ state, dispatch }) => ({
+        state: state[k],
+        dispatch
+      })
+    ))
+  }, Component.of(View.of(() => null)))
+}
 
 export default Component

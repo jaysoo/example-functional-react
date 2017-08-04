@@ -2,7 +2,7 @@ import { shallow } from 'enzyme'
 import { compose } from 'ramda'
 import React from 'react'
 import View from './View'
-import Component from './Component'
+import Component, { combine } from './Component'
 import Reducer from '../monads/Reducer'
 
 const a = Component({
@@ -152,7 +152,7 @@ test('Bicontraviant', () => {
   expect(y1.html()).toEqual(y2.html())
 })
 
-test('Trinary functor example', () => {
+test('Ternary functor example', () => {
   const b = a.trimap(s => s.b, b => ({ b }), ({ state, dispatch }) => ({
     state: state.b,
     dispatch
@@ -167,7 +167,7 @@ test('Trinary functor example', () => {
 })
 
 test('Quaternary functor example', () => {
-  const b = a.quadmap(s => s.b, b => ({ b }), ({ state, dispatch }) => ({
+  const b = a.quadmap(s => s.b, b => ({ b: { counter: b.counter + 1 } }), ({ state, dispatch }) => ({
     state: state.b,
     dispatch
   }), x => <main>{x}</main>)
@@ -177,5 +177,29 @@ test('Quaternary functor example', () => {
 
   wrapper.find('button').simulate('click')
   wrapper.find('button').simulate('click')
-  expect(wrapper.html()).toEqual('<main><div><button>increment</button><p>12</p></div></main>')
+  expect(wrapper.html()).toEqual('<main><div><button>increment</button><p>14</p></div></main>')
+})
+
+test('Combine example', () => {
+  const combined = combine({
+    x: a,
+    y: a,
+    z: a
+  })
+
+  const wrapper = shallow(combined.startWith({
+    x: { counter: 1 },
+    y: { counter: 2 },
+    z: { counter: 3 },
+  }))
+
+  expect(wrapper.html()).toEqual(
+    '<div><div><button>increment</button><p>1</p></div><div><button>increment</button><p>2</p></div><div><button>increment</button><p>3</p></div></div>'
+  )
+
+  wrapper.find('button').at(0).simulate('click')
+
+  expect(wrapper.html()).toEqual(
+    '<div><div><button>increment</button><p>2</p></div><div><button>increment</button><p>3</p></div><div><button>increment</button><p>4</p></div></div>'
+  )
 })
