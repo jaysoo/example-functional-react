@@ -5,7 +5,7 @@ import View from '../../react/View'
 import Reader from '../../monads/Reader'
 import Reducer from '../../monads/Reducer'
 
-export const todoCmp = View(({ state, dispatch }) => {
+export const view = View(({ state, dispatch }) => {
   return (
     <div>
       <form
@@ -27,25 +27,27 @@ export const todoCmp = View(({ state, dispatch }) => {
         <button type="submit">Add</button>
       </form>
       <ul>
-        {state.todo.items.map(todo => (
+        {state.todo.items.map(todo =>
           <li key={todo.id}>
             {todo.text}
             {' '}
-            <a style={{ color: '#999', cursor: 'pointer' }} onClick={() => dispatch({ type: 'todo/REMOVE', id: todo.id })}>
+            <a
+              style={{ color: '#999', cursor: 'pointer' }}
+              onClick={() => dispatch({ type: 'todo/REMOVE', id: todo.id })}
+            >
               ×
             </a>
           </li>
-        ))}
+        )}
       </ul>
     </div>
   )
 })
 
-export const todoReducer = Reducer((state, action) => {
+export const reducer = Reducer((state, action) => {
   switch (action.type) {
     case 'todo/UPDATE_NEW_TEXT':
       return {
-        ...state,
         todo: {
           ...state.todo,
           newText: action.text
@@ -54,7 +56,6 @@ export const todoReducer = Reducer((state, action) => {
     case 'todo/ADD':
       if (state.todo.newText) {
         return {
-          ...state,
           todo: {
             nextId: state.todo.nextId + 1,
             newText: '',
@@ -73,7 +74,6 @@ export const todoReducer = Reducer((state, action) => {
       const todo = state.todo.items.find(x => x.id === action.id)
       if (todo) {
         return {
-          ...state,
           todo: {
             ...state.todo,
             items: without([todo], state.todo.items)
@@ -87,18 +87,15 @@ export const todoReducer = Reducer((state, action) => {
   }
 })
 
-const todoApp = Reader.of(
-  Component({
-    view: todoCmp,
-    reducer: todoReducer.contramap(state => ({
-      todo: {
-        newText: '',
-        nextId: 1,
-        items: []
-      },
-      ...state
-    }))
-  })
-)
+const todoApp = Reader.of(Component({ reducer, view }))
 
-export default todoApp
+// We can use contramap on the reducer to create an initial state.
+export default todoApp.map(cmp =>
+  cmp.contramap(state => ({
+    todo: state.todo || {
+      newText: '',
+      nextId: 1,
+      items: []
+    }
+  }))
+)

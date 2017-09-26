@@ -7,9 +7,12 @@ const Reducer = f => ({
 
   promap: (g, h) => Reducer((s, a) => h(f(g(s, a), a))),
 
-  concat: other => Reducer((s, a) => {
-    return { ...f(s, a), ...other.fold(s, a) }
-  })
+  concat: other =>
+    Reducer((s, a) => ({
+      ...s,
+      ...f(s, a),
+      ...other.fold(s, a),
+    }))
 })
 
 export default Reducer

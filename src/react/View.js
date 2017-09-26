@@ -27,8 +27,9 @@ const View = pipe(
 
     map: f => View(x => computation(x).map(f)),
 
-    ap: other =>
-      View(props => ap(computation(props), other.computation(props))),
+    ap: other => (
+      View(props => (ap(computation(props), other.computation(props))))
+    ),
 
     contramap: g => View(x => computation(g(x))),
 

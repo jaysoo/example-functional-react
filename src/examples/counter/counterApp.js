@@ -26,12 +26,10 @@ export const counterReducer = Reducer((state, action) => {
   switch (action.type) {
     case 'counter/INC':
       return {
-        ...state,
         counter: state.counter + 1
       }
     case 'counter/DEC':
       return {
-        ...state,
         counter: state.counter - 1
       }
     default:
@@ -42,11 +40,10 @@ export const counterReducer = Reducer((state, action) => {
 const counterApp = Reader.of(
   Component({
     view: counterCmp,
-    reducer: counterReducer.contramap(state => ({
-      counter: 10,
-      ...state
-    }))
+    reducer: counterReducer
   })
 )
 
-export default counterApp
+export default counterApp.map(cmp => cmp.contramap(state => ({
+  counter: typeof state.counter === 'number' ? state.counter : 10
+})))

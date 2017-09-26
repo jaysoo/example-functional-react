@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ap, map } from 'ramda'
 import Monad from '../../monads/Monad'
 import Reader from '../../monads/Reader'
 import headerApp from './headerApp'
@@ -17,23 +16,25 @@ export const mainApp = Monad.do(function*() {
   return Reader.of(
     header
       .concat(
-        counter.map(map(x => (
-          <div>
-            <p>This is a counter that you can increment/decrement.</p>
-            {x}
-          </div>
-        )))
+        counter.map(x => {
+          return (
+            <div>
+              <p>This is a counter that you can increment/decrement.</p>
+              {x}
+            </div>
+          )
+        })
       )
       .concat(footer)
       .concat(
         todo
-          .map(map(x => (
+          .map(x => (
             <div>
               <h2>Your items</h2>
               {x}
             </div>
-          )))
-        .map(ap(asSidebar))
+          ))
+         .map(asSidebar)
       )
   )
 })

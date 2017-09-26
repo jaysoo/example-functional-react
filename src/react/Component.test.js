@@ -153,10 +153,14 @@ test('Bicontraviant', () => {
 })
 
 test('Ternary functor example', () => {
-  const b = a.trimap(s => s.b, b => ({ b }), ({ state, dispatch }) => ({
-    state: state.b,
-    dispatch
-  }))
+  const b = a.trimap(
+    s => s.b,
+    b => ({ b }),
+    ({ state, dispatch }) => ({
+      state: state.b,
+      dispatch
+    })
+  )
 
   const wrapper = shallow(b.startWith({ b: { counter: 10 } }))
   expect(wrapper.html()).toMatch(/<p>10<\/p>/)
@@ -167,17 +171,26 @@ test('Ternary functor example', () => {
 })
 
 test('Quaternary functor example', () => {
-  const b = a.quadmap(s => s.b, b => ({ b: { counter: b.counter + 1 } }), ({ state, dispatch }) => ({
-    state: state.b,
-    dispatch
-  }), x => <main>{x}</main>)
+  const b = a.quadmap(
+    s => s.b,
+    b => ({ b: { counter: b.counter } }),
+    ({ state, dispatch }) => ({
+        state: state.b,
+        dispatch
+    }),
+    x => <main>{x}</main>
+  )
 
   const wrapper = shallow(b.startWith({ b: { counter: 10 } }))
-  expect(wrapper.html()).toEqual('<main><div><button>increment</button><p>10</p></div></main>')
+  expect(wrapper.html()).toEqual(
+    '<main><div><button>increment</button><p>10</p></div></main>'
+  )
 
   wrapper.find('button').simulate('click')
   wrapper.find('button').simulate('click')
-  expect(wrapper.html()).toEqual('<main><div><button>increment</button><p>14</p></div></main>')
+  expect(wrapper.html()).toEqual(
+    '<main><div><button>increment</button><p>12</p></div></main>'
+  )
 })
 
 test('Combine example', () => {
@@ -187,11 +200,13 @@ test('Combine example', () => {
     z: a
   })
 
-  const wrapper = shallow(combined.startWith({
-    x: { counter: 1 },
-    y: { counter: 2 },
-    z: { counter: 3 },
-  }))
+  const wrapper = shallow(
+    combined.startWith({
+      x: { counter: 1 },
+      y: { counter: 2 },
+      z: { counter: 3 }
+    })
+  )
 
   expect(wrapper.html()).toEqual(
     '<div><div><button>increment</button><p>1</p></div><div><button>increment</button><p>2</p></div><div><button>increment</button><p>3</p></div></div>'

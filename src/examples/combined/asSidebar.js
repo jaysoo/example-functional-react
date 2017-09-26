@@ -1,7 +1,6 @@
 import React from 'react'
-import View from '../../react/View'
 
-const asSidebar = View.of(x => (
+const asSidebar = x => (
   <aside
     style={{
       padding: '5px',
@@ -15,6 +14,6 @@ const asSidebar = View.of(x => (
   >
     {x}
   </aside>
-))
+)
 
 export default asSidebar

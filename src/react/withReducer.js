@@ -11,13 +11,7 @@ const withReducer = (
     }
 
     initializeStateValue() {
-      if (initialState !== undefined) {
-        return typeof initialState === 'function'
-          ? initialState(this.props)
-          : initialState
-      } else {
-        return reducer(undefined, { type: '@@INIT' })
-      }
+      return reducer(initialState, { type: '@@INIT' })
     }
 
     dispatch = action =>

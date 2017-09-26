@@ -3,7 +3,7 @@ import withReducer from './withReducer'
 import Reducer from '../monads/Reducer'
 import View from './View'
 
-const Component = ({ reducer = Reducer(s => s), view }) => ({
+const Component = ({ reducer, view }) => ({
   reducer,
   view,
 
@@ -65,7 +65,7 @@ const Component = ({ reducer = Reducer(s => s), view }) => ({
     createElement(withReducer(reducer.fold, _initialState)(view))
 })
 
-Component.of = view => Component({ reducer: Reducer(s => s), view })
+Component.of = view => Component({ reducer: Reducer(s => ({})), view })
 
 export function combine(xs) {
   return Object.keys(xs).reduce((cmp, k) => {
