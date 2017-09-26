@@ -4,7 +4,6 @@ import Monad from '../../monads/Monad'
 import Reader from '../../monads/Reader'
 import headerApp from './headerApp'
 import footerApp from './footerApp'
-import asSidebar from './asSidebar'
 import { counterApp } from '../counter'
 import { todoApp } from '../todo'
 
@@ -29,6 +28,24 @@ export const mainApp = Monad.do(function*() {
   const footer = yield footerApp
   return Reader.of(header.concat(counterWithHint).concat(footer).concat(todoSidebar))
 })
+
+function asSidebar(x) {
+  return (
+    <aside
+      style={{
+        padding: '5px',
+        width: '300px',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        borderLeft: '1px solid gray'
+      }}
+    >
+      {x}
+    </aside>
+  )
+}
 
 export default element => {
   ReactDOM.render(
