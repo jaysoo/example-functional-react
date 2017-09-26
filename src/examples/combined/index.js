@@ -11,32 +11,23 @@ import { todoApp } from '../todo'
 export const mainApp = Monad.do(function*() {
   const header = yield headerApp
   const counter = yield counterApp
-  const todo = yield todoApp
-  const footer = yield footerApp
-  return Reader.of(
-    header
-      .concat(
-        counter.map(x => {
-          return (
-            <div>
-              <p>This is a counter that you can increment/decrement.</p>
-              {x}
-            </div>
-          )
-        })
-      )
-      .concat(footer)
-      .concat(
-        todo
-          .map(x => (
-            <div>
-              <h2>Your items</h2>
-              {x}
-            </div>
-          ))
-         .map(asSidebar)
-      )
+  const counterWithHint = counter.map(x =>
+    <div>
+      <p>This is a counter that you can increment/decrement.</p>
+      {x}
+    </div>
   )
+  const todo = yield todoApp
+  const todoSidebar = todo
+    .map(x =>
+      <div>
+        <h2>Your items</h2>
+        {x}
+      </div>
+    )
+    .map(asSidebar)
+  const footer = yield footerApp
+  return Reader.of(header.concat(counterWithHint).concat(footer).concat(todoSidebar))
 })
 
 export default element => {
